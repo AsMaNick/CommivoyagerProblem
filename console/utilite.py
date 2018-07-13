@@ -27,6 +27,28 @@ def gener(params):
 		print('generated')
 	except Exception as e:
 		print(e)
+		
+		
+def gener_circle(params):
+	if os.path.isfile('files/optimal.txt'):
+		os.remove('files/optimal.txt')
+	try:
+		n = int(params[1])
+		rs = []
+		s_params = str(n)
+		for i in range(2, len(params)):
+			rs.append(int(params[i]))
+			s_params += ' ' + str(rs[-1])
+			assert(1 <= rs[-1] <= 20000)
+		assert(1 <= n <= 1000 and len(rs) > 0)
+	except Exception:
+		print('Provide correct paremeters for generation: n (1 <= n <= 1000), rs (1 <= rs[i] <= 20000)')
+		return
+	try:
+		subprocess.call('generators/gener_circle.exe ' + s_params, stdout=open('files/input.txt', 'w'))
+		print('generated')
+	except Exception as e:
+		print(e)
 	
 	
 def show(params):
@@ -106,6 +128,8 @@ while True:
 	try:
 		if params[0] == 'gener':
 			gener(params)
+		elif params[0] == 'gener_circle':
+			gener_circle(params)
 		elif params[0] == 'show':
 			show(params)
 		elif params[0] == 'run':
