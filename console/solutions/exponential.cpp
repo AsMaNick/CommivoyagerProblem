@@ -21,7 +21,7 @@ int main() {
         write_path(points, p);
         return 0;
     }
-    vector<vector<int>> d(n + 1, vector<int> (n + 1));
+    vector<vector<double>> d(n + 1, vector<double> (n + 1));
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             d[i][j] = dist(points[i], points[j]);
@@ -30,7 +30,7 @@ int main() {
         d[i][n] = d[i][0] + 2 * inf;
     }
     d[0][n] = 3 * inf;
-    vector<vector<int>> dp(1 << (n + 1), vector<int> (n + 1, 3 * inf));
+    vector<vector<double>> dp(1 << (n + 1), vector<double> (n + 1, 3 * inf));
     vector<vector<int>> parent(1 << (n + 1), vector<int> (n + 1));
     dp[1][0] = 0;
     for (int mask = 1; mask < (1 << (n + 1)); ++mask) {
