@@ -5,7 +5,7 @@ import numpy as np
 
 city_radius = 3
 shift_y = 22
-add_x = 200
+add_x = 250
 
 
 def normalize(city, coef):
@@ -93,13 +93,20 @@ if len(sys.argv) > 1 and sys.argv[1] == 'all':
 	solution_list = ['exponential', 'random', 'closest_neighbor', '2_approximation', 'bitonic', '15_approximation']
 if len(sys.argv) > 1 and sys.argv[1] == 'all_2_opt':
 	solution_list = ['exponential_2_opt', 'random_2_opt', 'closest_neighbor_2_opt', '2_approximation_2_opt', 'bitonic_2_opt', '15_approximation_2_opt']
-for solution in solution_list:
-	try:
-		was_score, path, steps, score = read_path(solution)
-		put_header(solution, was_score, steps, score)
-		put_path(img, cities, path)
-	except Exception as e:
-		print(e)
+if len(sys.argv) > 1 and sys.argv[1] == 'all_3_opt':
+	solution_list = ['exponential_3_opt', 'random_3_opt', 'closest_neighbor_3_opt', '2_approximation_3_opt', 'bitonic_3_opt', '15_approximation_3_opt']
+for solution_c in solution_list:
+	solutions = [solution_c]
+	if ends_with(solution_c, '*'):
+		base = solution_c[:-1]
+		solutions = [base, base + '_2_opt', base + '_3_opt']
+	for solution in solutions:
+		try:
+			was_score, path, steps, score = read_path(solution)
+			put_header(solution, was_score, steps, score)
+			put_path(img, cities, path)
+		except Exception as e:
+			print(e)
 img = np.vstack((all_headers, img))
 cv2.imshow('Graph', img)
 cv2.waitKey(0)

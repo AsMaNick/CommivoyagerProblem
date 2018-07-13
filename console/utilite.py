@@ -77,7 +77,9 @@ def apply(params):
 	if len(params) == 2:
 		print('Please specify result for which apply optimization')
 		return
-	if params[1] == '2_opt':
+	opts = ['2_opt', '3_opt']
+	opt = params[1]
+	if opt in opts:
 		solutions = ['exponential', 'random', 'closest_neighbor', '2_approximation', 'bitonic', '15_approximation']
 		ok = False
 		for solution in solutions:	
@@ -86,15 +88,15 @@ def apply(params):
 				if not os.path.isfile('files/output_' + solution + '.txt'):
 					print('Can not apply optimization for the ' + solution + ', because do not have results for this solution')
 					continue
-				print('Applying 2_opt for the ' + solution + '...')
-				tm = run_command('solutions/2_opt.exe files/output_' + solution + '.txt', 
+				print('Applying {} for the '.format(opt) + solution + '...')
+				tm = run_command('solutions/{}.exe files/output_'.format(opt) + solution + '.txt', 
 								  stdin=open('files/input.txt', 'r'),
-								  stdout=open('files/output_' + solution + '_2_opt.txt', 'w'))
-				print('Done, the score is {:.2f}, time = {:.2f}s'.format(get_score(solution + '_2_opt'), tm))
+								  stdout=open('files/output_' + solution + '_{}.txt'.format(opt), 'w'))
+				print('Done, the score is {:.2f}, time = {:.2f}s'.format(get_score(solution + '_{}'.format(opt)), tm))
 		if not ok:
 			print('Please, specify correct name of the program:', solutions)
-		return
-	print('Please, specify correct name of the optimization')
+	else:
+		print('Please, specify correct name of the optimization')
 			
 			
 while True:

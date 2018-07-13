@@ -7,7 +7,7 @@ using namespace std;
 int n, steps;
 vector<point> points;
 vector<int> p, pos, dir;
-vector<pair<double, pair<int, int>>> all;
+vector<pair<double, pair<int, pair<int, int>>>> all;
 
 int get_pos(int v) {
     int res = pos[v];
@@ -28,9 +28,13 @@ void update(int pos1, int pos2) {
     }
 }
 
-double get_diff(int pos1, int pos2) {
-    double cur_dist = dist(points[p[pos1]], points[p[(pos1 + 1) % n]]) + dist(points[p[pos2]], points[p[(pos2 + 1) % n]]);
-    double upd_dist = dist(points[p[pos1]], points[p[pos2]]) + dist(points[p[(pos1 + 1) % n]], points[p[(pos2 + 1) % n]]);
+double get_diff(int pos1, int pos2, int pos3) {
+    double cur_dist = dist(points[p[pos1]], points[p[(pos1 + 1) % n]]) +
+                      dist(points[p[pos2]], points[p[(pos2 + 1) % n]]) +
+                      dist(points[p[pos3]], points[p[(pos3 + 1) % n]]);
+    double upd_dist = dist(points[p[pos1]], points[p[pos2]]) +
+                      dist(points[p[(pos1 + 1) % n]], points[p[pos3 % n]]) +
+                      dist(points[p[(pos2 + 1) % n]], points[p[(pos3 + 1) % n]]);
     return cur_dist - upd_dist;
 }
 
@@ -39,11 +43,13 @@ void recalculate_all() {
         pos[p[pos1]] = pos1;
         dir[p[pos1]] = 1;
     }
-    for (int pos1 = 0; pos1 < n; ++pos1) {
-        for (int pos2 = pos1 + 2; pos2 < n; ++pos2) {
-            double diff = get_diff(pos1, pos2);
-            if (diff > 0) {
-                all.push_back(make_pair(diff, make_pair(p[pos1], p[pos2])));
+    for (int pos1 = 0; pos1 < n && all.size() < n * n; ++pos1) {
+        for (int pos2 = pos1 + 1; pos2 < n; ++pos2) {
+            for (int pos3 = pos2 + 1; pos3 < n; ++pos3) {
+                double diff = get_diff(pos1, pos2, pos3);
+                if (diff > 0) {
+                    all.push_back(make_pair(diff, make_pair(p[pos1], make_pair(p[pos2], p[pos3]))));
+                }
             }
         }
     }
@@ -52,19 +58,29 @@ void recalculate_all() {
 
 void improve() {
     while (all.size()) {
-        int u = all.back().second.first, v = all.back().second.second;
+        int u = all.back().second.first;
+        int v = all.back().second.second.first;
+        int z = all.back().second.second.second;
         int pos1 = get_pos(u);
         int pos2 = get_pos(v);
+        int pos3 = get_pos(z);
+        if (pos2 > pos3) {
+            swap(pos2, pos3);
+        }
         if (pos1 > pos2) {
             swap(pos1, pos2);
         }
+        if (pos2 > pos3) {
+            swap(pos2, pos3);
+        }
         all.pop_back();
-        if (pos1 + 1 >= pos2) {
+        if (pos1 == pos2 || pos2 == pos3) {
             continue;
         }
-        double diff = get_diff(pos1, pos2);
+        double diff = get_diff(pos1, pos2, pos3);
         if (diff > 0) {
             update(pos1, pos2);
+            update(pos2, pos3);
             ++steps;
         }
     }
@@ -79,7 +95,7 @@ int main(int argc, char *argv[]) {
     ifstream file_with_path(argv[1]);
     p = read_path(file_with_path);
     if (points.size() != p.size()) {
-        cout << "Fail, points.size() is not equal to path.size()" << endl;
+        cout << "FAIL, points.size() is not equal to path.size()" << endl;
         return 0;
     }
     cout.precision(2);
