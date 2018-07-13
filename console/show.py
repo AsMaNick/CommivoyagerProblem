@@ -5,9 +5,11 @@ import numpy as np
 
 city_radius = 3
 shift_y = 22
+add_x = 200
+
 
 def normalize(city, coef):
-	return int(city[0] * coef), int(city[1] * coef) + city_radius
+	return int(city[0] * coef) + add_x // 2, int(city[1] * coef) + city_radius + shift_y // 2
 	
 	
 def read_cities():
@@ -23,11 +25,21 @@ def read_cities():
 	return cities
 	
 
+def ends_with(a, b):
+	return len(a) >= len(b) and a[-len(b):] == b
+	
+	
 def read_path(solution):
 	f = open('files/output_' + solution + '.txt', 'r')
-	score = float(f.readline())
+	was_score = float(f.readline())
+	steps = -1
+	score = was_score
+	if ends_with(solution, 'opt'):
+		steps = int(f.readline())
+		score = float(f.readline())
 	path = list(map(int, f.readline().split()))
-	return score, path
+	f.close()
+	return was_score, path, steps, score
 	
 	
 def put_cities(img, cities):
@@ -44,13 +56,14 @@ def get_optimal_score():
 		return -1
 		
 		
-		
-def put_header(solution, score):
+def put_header(solution, was_score, steps, score):
 	global color_num, all_headers
-	header = np.zeros((shift_y, n, 3), np.uint8)
+	header = np.zeros((shift_y, n + add_x, 3), np.uint8)
 	header[::] = 255
 	opt_score = get_optimal_score()
-	header_text = solution + ': ' + str(score)
+	header_text = solution + ': ' + str(was_score)
+	if steps >= 0:
+		header_text += ' => ' + str(score) + ' (' + str(steps) + ' steps)'
 	if opt_score >= 0:
 		k = score / opt_score
 		header_text += ', optimal = ' + str(opt_score) + ', k = ' + str(k)[:str(k).find('.') + 3]
@@ -68,20 +81,22 @@ def put_path(img, cities, path):
 colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (200, 200, 0), (255, 0, 255), (0, 200, 200)]
 global color_num, all_headers
 color_num = 0
-n = 600
-all_headers = np.zeros((1, n, 3), np.uint8)
+n = 550
+all_headers = np.zeros((1, n + add_x, 3), np.uint8)
 all_headers[::] = 255
-img = np.zeros((n + 2 * city_radius, n, 3), np.uint8)
+img = np.zeros((n + shift_y + 2 * city_radius, n + add_x, 3), np.uint8)
 img[::] = 255
 cities = read_cities()
 put_cities(img, cities)
 solution_list = sys.argv[1:]
 if len(sys.argv) > 1 and sys.argv[1] == 'all':
 	solution_list = ['exponential', 'random', 'closest_neighbor', '2_approximation', 'bitonic', '15_approximation']
+if len(sys.argv) > 1 and sys.argv[1] == 'all_2_opt':
+	solution_list = ['exponential_2_opt', 'random_2_opt', 'closest_neighbor_2_opt', '2_approximation_2_opt', 'bitonic_2_opt', '15_approximation_2_opt']
 for solution in solution_list:
 	try:
-		score, path = read_path(solution)
-		put_header(solution, score)
+		was_score, path, steps, score = read_path(solution)
+		put_header(solution, was_score, steps, score)
 		put_path(img, cities, path)
 	except Exception as e:
 		print(e)

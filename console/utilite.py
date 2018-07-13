@@ -1,7 +1,14 @@
 import subprocess
+import time
 import os
 
 
+def run_command(command, **args):
+	start_time = time.time()
+	subprocess.call(command, **args)
+	return time.time() - start_time
+	
+	
 def gener(params):
 	if os.path.isfile('files/optimal.txt'):
 		os.remove('files/optimal.txt')
@@ -28,6 +35,24 @@ def show(params):
 		command += ' ' + params[i]
 	subprocess.call(command)
 		
+
+def ends_with(a, b):
+	return len(a) >= len(b) and a[-len(b):] == b
+	
+	
+def get_score(solution):
+	try:
+		f = open('files/output_' + solution + '.txt', 'r')
+		score = float(f.readline())
+		if ends_with(solution, 'opt'):
+			steps = f.readline()
+			score = float(f.readline())
+		f.close()
+		return score
+	except Exception as e:
+		print(e)
+		return -1
+		
 		
 def run(params):
 	if len(params) == 1:
@@ -39,12 +64,39 @@ def run(params):
 		if params[1] == solution or params[1] == 'all':
 			ok = True
 			print('Running ' + solution + '...')
-			subprocess.call('solutions/' + solution + '.exe', stdin=open('files/input.txt', 'r'), stdout=open('files/output_' + solution + '.txt', 'w'))
-			print('done')
+			tm = run_command('solutions/' + solution + '.exe', stdin=open('files/input.txt', 'r'), stdout=open('files/output_' + solution + '.txt', 'w'))
+			print('Done, the score is {:.2f}, time = {:.2f}s'.format(get_score(solution), tm))
 	if not ok:
 		print('Please, specify correct name of the program:', solutions)
 	
-		
+
+def apply(params):
+	if len(params) == 1:
+		print('Please, specify optimization to apply')
+		return
+	if len(params) == 2:
+		print('Please specify result for which apply optimization')
+		return
+	if params[1] == '2_opt':
+		solutions = ['exponential', 'random', 'closest_neighbor', '2_approximation', 'bitonic', '15_approximation']
+		ok = False
+		for solution in solutions:	
+			if params[2] == solution or params[2] == 'all':
+				ok = True
+				if not os.path.isfile('files/output_' + solution + '.txt'):
+					print('Can not apply optimization for the ' + solution + ', because do not have results for this solution')
+					continue
+				print('Applying 2_opt for the ' + solution + '...')
+				tm = run_command('solutions/2_opt.exe files/output_' + solution + '.txt', 
+								  stdin=open('files/input.txt', 'r'),
+								  stdout=open('files/output_' + solution + '_2_opt.txt', 'w'))
+				print('Done, the score is {:.2f}, time = {:.2f}s'.format(get_score(solution + '_2_opt'), tm))
+		if not ok:
+			print('Please, specify correct name of the program:', solutions)
+		return
+	print('Please, specify correct name of the optimization')
+			
+			
 while True:
 	params = input().split()
 	if len(params) == 0:
@@ -56,6 +108,8 @@ while True:
 			show(params)
 		elif params[0] == 'run':
 			run(params)
+		elif params[0] == 'apply':
+			apply(params)
 		else:
 			print('Unknown command')
 	except Exception as e:

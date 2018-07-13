@@ -33,4 +33,15 @@ vector<point> read_points() {
     return res;
 }
 
+vector<int> read_path(ifstream &in) {
+    double score;
+    vector<int> path;
+    int vertex;
+    in >> score;
+    while (in >> vertex) {
+        path.push_back(vertex);
+    }
+    return path;
+}
+
 #endif // READER
