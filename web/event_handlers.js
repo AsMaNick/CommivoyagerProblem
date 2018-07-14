@@ -82,6 +82,10 @@ function random_path_onclick() {
 		write_error(5, 'Закончите построение городов');
 		return;
 	}
+	if (points.length < 3) {
+		write_error(5, 'Добавьте хотя бы 3 города');
+		return;
+	}
 	redraw_points();
 	find_random_path();
 	animation = new Animation();
@@ -103,6 +107,10 @@ function closest_neighbor_onclick() {
 	}
 	if (mode == 'add_city') {
 		write_error(6, 'Закончите построение городов');
+		return;
+	}
+	if (points.length < 3) {
+		write_error(6, 'Добавьте хотя бы 3 города');
 		return;
 	}
 	enable_visualization_mode();
@@ -127,6 +135,10 @@ function minimum_spaning_tree_onclick() {
 	}
 	if (mode == 'add_city') {
 		write_error(7, 'Закончите построение городов');
+		return;
+	}
+	if (points.length < 3) {
+		write_error(7, 'Добавьте хотя бы 3 города');
 		return;
 	}
 	redraw_points();
@@ -168,6 +180,10 @@ function opt_2_onclick() {
 		write_error(8, 'Для начала необходимо построить путь');
 		return;
 	}
+	if (points.length < 3) {
+		write_error(8, 'Добавьте хотя бы 3 города');
+		return;
+	}
 	steps = 0;
 	n = points.length;
 	pos = new Array(n.length);
@@ -191,6 +207,10 @@ function opt_3_onclick() {
 	}
     if (path.length != points.length) {
 		write_error(8, 'Для начала необходимо построить путь');
+		return;
+	}
+	if (points.length < 3) {
+		write_error(8, 'Добавьте хотя бы 3 города');
 		return;
 	}
 	steps = 0;
