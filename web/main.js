@@ -1,11 +1,12 @@
-var MAX_N = 1000;
+var MAX_POINTS = 100;
 var MAX_X = 750;
 var MAX_Y = 350;
-var TIME_INTERVAL = 1000;
+var TIME_INTERVAL = 1500;
 var rad_vert = 2;
+var big_rad_vert = 5;
 
 function get_speed() {
-	return TIME_INTERVAL / (Math.sqrt(get_int_field('speed')));
+	return TIME_INTERVAL * (1001 - get_int_field('speed')) / 1000;
 }
 
 if (!String.prototype.format) {
@@ -145,7 +146,7 @@ function Graphics() {
 		this.check_size(x + rad_vert, y + rad_vert);
 	}
 	
-	this.draw_edge = function draw_edge(u, v, len) {
+	this.draw_edge = function draw_edge(u, v) {
 		c1 = this.get_node_coords(u);
 		c2 = this.get_node_coords(v);
 		
@@ -219,13 +220,15 @@ var output = get_elem('log');
 var points = [];
 var path = [];
 var graphics = new Graphics();
-var add_city_mode = false;
+var mode = 'ordinary';
+var visualization_type = 'auto';
 var steps = 0;
 
-function Operation(tp, desc, col, u, v) {
+function Operation(tp, desc, was_col, col, u, v) {
 	this.tp = tp;
 	this.desc = desc;
 	this.col = col;
+	this.was_col = was_col;
 	this.u = u;
 	this.v = v;
 	
@@ -249,8 +252,27 @@ function Operation(tp, desc, col, u, v) {
 		}
 	}
 	
-	this.write = function() {
-		//alert(this.tp + ' ' + this.desc + ' ' + this.col + ' ' + this.u + ' ' + this.v);
+	this.apply_back = function() {
+		if (this.desc != '') {
+			write_log('Отмена: ' + this.desc);
+		}
+		if (tp == 'node_col') {
+			graphics.set_node_col(this.u, this.was_col);
+		} else if (tp == 'node_rad') {
+			graphics.set_node_rad(this.u, this.was_col);
+		} else if (tp == 'edge_col') {
+			graphics.set_edge_col(this.u, this.v, this.was_col);
+		} else if (tp == 'edge') {
+			graphics.del_edge(this.u, this.v);
+		} else if (tp == 'edge_del') {
+			graphics.draw_edge(this.u, this.v);
+			graphics.set_edge_col(this.u, this.v, this.was_col);
+			if (this.was_col == 'red') {
+				graphics.set_edge_stroke_width(this.u, this.v, 2);
+			}
+		} else if (tp == 'edge_width') {
+			graphics.set_edge_stroke_width(this.u, this.v, this.was_col);
+		}
 	}
 }
 
@@ -258,7 +280,6 @@ function Block() {
 	this.operations = [];
 	
 	this.add = function(operation) {
-		operation.write();
 		this.operations.push(operation);
 	}
 	
@@ -266,6 +287,21 @@ function Block() {
 		for (var i = 0; i < this.operations.length; ++i) {
 			this.operations[i].apply();
 		}
+	}
+	
+	this.apply_back = function() {
+		for (var i = this.operations.length - 1; i >= 0; --i) {
+			this.operations[i].apply_back();
+		}
+	}
+}
+
+function enable_visualization_mode() {
+	mode = 'visualization';
+	if (get_field('select_v') == 'Автоматическая') {
+		visualization_type = 'auto';
+	} else {
+		visualization_type = 'manual';
 	}
 }
 
@@ -278,15 +314,32 @@ function Animation() {
 	}
 	
 	this.start = function() {
+		enable_visualization_mode();
 		this.block_id = 0;
-		setTimeout(function() { show_block(); }, get_speed());
+		if (visualization_type == 'auto') {
+			setTimeout(function() { show_block(); }, get_speed());
+		} else {
+			setTimeout(function() { show_block(); }, 100);
+		}
 	}
 	
 	this.show_block = function() {
 		if (this.block_id < this.blocks.length) {
 			this.blocks[this.block_id].apply();
 			++this.block_id;			
-			setTimeout(function() { show_block(); }, get_speed());
+			if (visualization_type == 'auto') {
+				setTimeout(function() { show_block(); }, get_speed());
+			}
+		} else {
+			write_log('Визуализация закончена. Итоговая длина пути {0}'.format(rounded(evaluate(path))));
+			mode = 'ordinary';
+		}
+	}
+	
+	this.apply_back = function() {
+		if (this.block_id > 0) {
+			--this.block_id;
+			this.blocks[this.block_id].apply_back();
 		}
 	}
 }

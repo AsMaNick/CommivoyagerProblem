@@ -30,13 +30,13 @@
 				<button style='width:162px; font-size: 12px;' onclick='load_sample_onclick()'> Загрузить пример </button> <br>
 				<span class="error" id="sp2"></span> <br>
 				
-				<button style='font-size: 12px;' onclick='enable_adding_city()' name='add_city_button'> Добавить город вручную </button> <br>
+				<button style='font-size: 12px;' onclick='enable_adding_city_onclick()' name='add_city_button'> Добавить город вручную </button> <br>
 				<span class="error" id="sp3"></span> <br>
 				
-				<button style='font-size: 12px;' onclick='clear_cities()'> Удалить все города </button> <br>
+				<button style='font-size: 12px;' onclick='clear_cities_onclick()'> Удалить все города </button> <br>
 				<span class="error" id="sp4"></span> <br>
 			</div>
-			<br>
+			
 			<div>
 				<legend> Построение стартового маршрута </legend>
 				<br>
@@ -50,7 +50,7 @@
 				<button onclick='minimum_spaning_tree_onclick()'> Метод остовного дерева </button> <br>
 				<span class="error" id="sp7"></span> <br>
 			</div>
-			<br>
+			
 			<div>
 				<legend> Локальный поиск </legend>
 				<br>
@@ -58,13 +58,13 @@
 				<button onclick='opt_2_onclick()'> 2-opt </button> <br>
 				<span class="error" id="sp8"></span> <br>
 			</div>
-			<br>
+			
 			<div>
 				<legend>Дополнительно: </legend>
 				<br>
 				
 				<span style="vertical-align:top; font-size:17px; display:inline-block; margin:2px 10px 0 0;">Скорость: </span>
-				<input name="speed" style="width:160px;" type="range" min="1" max="400" value="5">
+				<input name="speed" style="width:160px;" type="range" min="1" max="1000" value="500">
 				<br>
 				<br>
 				
