@@ -120,29 +120,30 @@ function rounded(number){
     return +number.toFixed(2);
 }
 
-function update(pos1, pos2, diff) {
-	++steps;
-	var block = new Block();
-	block.add(new Operation('edge_col', '{0}. Удаляем ребро {1} {2}'.format(steps, path[pos1], path[(pos1 + 1) % n]), 'grey', 'red', path[pos1], path[(pos1 + 1) % n]));
-	block.add(new Operation('edge_col', '{0}. Удаляем ребро {1} {2}'.format(steps, path[pos2], path[(pos2 + 1) % n]), 'grey', 'red', path[pos2], path[(pos2 + 1) % n]));
-	block.add(new Operation('edge_width', '', 1, 2, path[pos1], path[(pos1 + 1) % n]));
-	block.add(new Operation('edge_width', '', 1, 2, path[pos2], path[(pos2 + 1) % n]));
-	animation.add(block);
-	block = new Block();
-	block.add(new Operation('edge', '{0}. Добавляем ребро {1} {2}'.format(steps, path[pos1], path[pos2]), 'grey', 'green', path[pos1], path[pos2]));
-	block.add(new Operation('edge', '{0}. Добавляем ребро {1} {2}'.format(steps, path[(pos1 + 1) % n], path[(pos2 + 1) % n]), 'grey', 'green', path[(pos1 + 1) % n], path[(pos2 + 1) % n]));
-	block.add(new Operation('edge_width', '', 1, 2, path[pos1], path[pos2]));
-	block.add(new Operation('edge_width', '', 1, 2, path[(pos1 + 1) % n], path[(pos2 + 1) % n]));
-	animation.add(block);
-	block = new Block();
-	cur_len -= diff;
-	block.add(new Operation('edge_del', '{0}. Получили улучшение на {1}. Новая длина маршрута равна {2}'.format(steps, rounded(diff), rounded(cur_len)), 'red', 'null', path[pos1], path[(pos1 + 1) % n]));
-	block.add(new Operation('edge_del', '', 'red', 'null', path[pos2], path[(pos2 + 1) % n]));
-	block.add(new Operation('edge_col', '', 'green', 'grey', path[pos1], path[pos2]));
-	block.add(new Operation('edge_col', '', 'green', 'grey', path[(pos1 + 1) % n], path[(pos2 + 1) % n]));
-	block.add(new Operation('edge_width', '', 2, 1, path[pos1], path[pos2]));
-	block.add(new Operation('edge_width', '', 2, 1, path[(pos1 + 1) % n], path[(pos2 + 1) % n]));
-	animation.add(block);
+function update(pos1, pos2, diff, vis) {
+	if (vis) {
+		var block = new Block();
+		block.add(new Operation('edge_col', '{0}. Удаляем ребро {1} {2}'.format(steps, path[pos1], path[(pos1 + 1) % n]), 'grey', 'red', path[pos1], path[(pos1 + 1) % n]));
+		block.add(new Operation('edge_col', '{0}. Удаляем ребро {1} {2}'.format(steps, path[pos2], path[(pos2 + 1) % n]), 'grey', 'red', path[pos2], path[(pos2 + 1) % n]));
+		block.add(new Operation('edge_width', '', 1, 2, path[pos1], path[(pos1 + 1) % n]));
+		block.add(new Operation('edge_width', '', 1, 2, path[pos2], path[(pos2 + 1) % n]));
+		animation.add(block);
+		block = new Block();
+		block.add(new Operation('edge', '{0}. Добавляем ребро {1} {2}'.format(steps, path[pos1], path[pos2]), 'grey', 'green', path[pos1], path[pos2]));
+		block.add(new Operation('edge', '{0}. Добавляем ребро {1} {2}'.format(steps, path[(pos1 + 1) % n], path[(pos2 + 1) % n]), 'grey', 'green', path[(pos1 + 1) % n], path[(pos2 + 1) % n]));
+		block.add(new Operation('edge_width', '', 1, 2, path[pos1], path[pos2]));
+		block.add(new Operation('edge_width', '', 1, 2, path[(pos1 + 1) % n], path[(pos2 + 1) % n]));
+		animation.add(block);
+		block = new Block();
+		cur_len -= diff;
+		block.add(new Operation('edge_del', '{0}. Получили улучшение на {1}. Новая длина маршрута равна {2}'.format(steps, rounded(diff), rounded(cur_len)), 'red', 'null', path[pos1], path[(pos1 + 1) % n]));
+		block.add(new Operation('edge_del', '', 'red', 'null', path[pos2], path[(pos2 + 1) % n]));
+		block.add(new Operation('edge_col', '', 'green', 'grey', path[pos1], path[pos2]));
+		block.add(new Operation('edge_col', '', 'green', 'grey', path[(pos1 + 1) % n], path[(pos2 + 1) % n]));
+		block.add(new Operation('edge_width', '', 2, 1, path[pos1], path[pos2]));
+		block.add(new Operation('edge_width', '', 2, 1, path[(pos1 + 1) % n], path[(pos2 + 1) % n]));
+		animation.add(block);
+	}
 	
     ++pos1;
     for (var i = pos1; i < pos2 - i + pos1; ++i) {
@@ -181,7 +182,7 @@ function recalculate_all() {
     allt.sort(function(a, b) { return a[0] - b[0] } );
 }
 
-function improve() {
+function improve(rec_call) {
     while (allt.length > 0) {
         var u = allt[allt.length - 1][1];
         var v = allt[allt.length - 1][2];
@@ -198,11 +199,117 @@ function improve() {
         }
         var diff = get_diff(pos1, pos2);
         if (diff > 0) {
-            update(pos1, pos2, diff);
+			++steps;
+            update(pos1, pos2, diff, true);
         }
     }
-    recalculate_all();
-    if (allt.length > 0) {
-        improve();
+	if (rec_call) {
+		recalculate_all();
+		if (allt.length > 0) {
+			improve(rec_call);
+		}
+	}
+}
+
+function get_diff3(pos1, pos2, pos3) {
+    var cur_dist = dist(points[path[pos1]], points[path[(pos1 + 1) % n]]) + 
+				   dist(points[path[pos2]], points[path[(pos2 + 1) % n]]) +
+				   dist(points[path[pos3]], points[path[(pos3 + 1) % n]]);
+    var upd_dist = dist(points[path[pos1]], points[path[pos2]]) +
+				   dist(points[path[(pos1 + 1) % n]], points[path[pos3 % n]]) +
+				   dist(points[path[(pos2 + 1) % n]], points[path[(pos3 + 1) % n]]);
+    return cur_dist - upd_dist;
+}
+
+function recalculate_all3() {
+    for (var pos1 = 0; pos1 < n; ++pos1) {
+        pos[path[pos1]] = pos1;
+        dir[path[pos1]] = 1;
     }
+    for (var pos1 = 0; pos1 < n && allt.length < n * n; ++pos1) {
+        for (var pos2 = pos1 + 2; pos2 < n; ++pos2) {
+            for (var pos3 = pos2 + 2; pos3 < n; ++pos3) {
+                var diff = get_diff3(pos1, pos2, pos3);
+                if (diff > 0) {
+                    allt.push([diff, path[pos1], path[pos2], path[pos3]]);
+                }
+            }
+        }
+    }
+    allt.sort(function(a, b) { return a[0] - b[0] } );
+}
+
+function animate3(pos1, pos2, pos3, diff) {
+	var block = new Block();
+	block.add(new Operation('edge_col', '{0}. Удаляем ребро {1} {2}'.format(steps, path[pos1], path[(pos1 + 1) % n]), 'grey', 'red', path[pos1], path[(pos1 + 1) % n]));
+	block.add(new Operation('edge_col', '{0}. Удаляем ребро {1} {2}'.format(steps, path[pos2], path[(pos2 + 1) % n]), 'grey', 'red', path[pos2], path[(pos2 + 1) % n]));
+	block.add(new Operation('edge_col', '{0}. Удаляем ребро {1} {2}'.format(steps, path[pos3], path[(pos3 + 1) % n]), 'grey', 'red', path[pos3], path[(pos3 + 1) % n]));
+	block.add(new Operation('edge_width', '', 1, 2, path[pos1], path[(pos1 + 1) % n]));
+	block.add(new Operation('edge_width', '', 1, 2, path[pos2], path[(pos2 + 1) % n]));
+	block.add(new Operation('edge_width', '', 1, 2, path[pos3], path[(pos3 + 1) % n]));
+	animation.add(block);
+	cur_len -= diff;
+	block = new Block();
+	block.add(new Operation('edge', '{0}. Добавляем ребро {1} {2}'.format(steps, path[pos1], path[pos2]), 'grey', 'green', path[pos1], path[pos2]));
+	block.add(new Operation('edge', '{0}. Добавляем ребро {1} {2}'.format(steps, path[(pos1 + 1) % n], path[(pos3) % n]), 'grey', 'green', path[(pos1 + 1) % n], path[(pos3) % n]));
+	block.add(new Operation('edge', '{0}. Добавляем ребро {1} {2}'.format(steps, path[(pos2 + 1) % n], path[(pos3 + 1) % n]), 'grey', 'green', path[(pos2 + 1) % n], path[(pos3 + 1) % n]));
+	block.add(new Operation('edge_width', '', 1, 2, path[pos1], path[pos2]));
+	block.add(new Operation('edge_width', '', 1, 2, path[(pos1 + 1) % n], path[(pos3) % n]));
+	block.add(new Operation('edge_width', '', 1, 2, path[(pos2 + 1) % n], path[(pos3 + 1) % n]));
+	animation.add(block);
+	block = new Block();
+	block.add(new Operation('edge_del', '{0}. Получили улучшение на {1}. Новая длина маршрута равна {2}'.format(steps, rounded(diff), rounded(cur_len)), 'red', 'null', path[pos1], path[(pos1 + 1) % n]));
+	block.add(new Operation('edge_del', '', 'red', 'null', path[pos2], path[(pos2 + 1) % n]));
+	block.add(new Operation('edge_del', '', 'red', 'null', path[pos3], path[(pos3 + 1) % n]));
+	block.add(new Operation('edge_col', '', 'green', 'grey', path[pos1], path[pos2]));
+	block.add(new Operation('edge_col', '', 'green', 'grey', path[(pos1 + 1) % n], path[(pos3) % n]));
+	block.add(new Operation('edge_col', '', 'green', 'grey', path[(pos2 + 1) % n], path[(pos3 + 1) % n]));
+	block.add(new Operation('edge_width', '', 2, 1, path[pos1], path[pos2]));
+	block.add(new Operation('edge_width', '', 2, 1, path[(pos1 + 1) % n], path[(pos3) % n]));
+	block.add(new Operation('edge_width', '', 2, 1, path[(pos2 + 1) % n], path[(pos3 + 1) % n]));
+	animation.add(block);
+}
+
+function improve3() {
+    while (allt.length > 0) {
+        var u = allt[allt.length - 1][1];
+        var v = allt[allt.length - 1][2];
+        var z = allt[allt.length - 1][3];
+        var pos1 = get_pos(u);
+        var pos2 = get_pos(v);
+        var pos3 = get_pos(z);
+		if (pos2 > pos3) {
+			var tmp = pos2;
+			pos2 = pos3;
+			pos3 = tmp;
+        }
+        if (pos1 > pos2) {
+			var tmp = pos1;
+			pos1 = pos2;
+			pos2 = tmp;
+        }
+		if (pos2 > pos3) {
+			var tmp = pos2;
+			pos2 = pos3;
+			pos3 = tmp;
+        }
+        allt.pop();
+        if (pos1 + 1 >= pos2 || pos2 + 1 >= pos3) {
+            continue;
+        }
+        var diff = get_diff3(pos1, pos2, pos3);
+        if (diff > 0) {
+			++steps;
+			animate3(pos1, pos2, pos3, diff);
+            update(pos1, pos2, diff, false);
+            update(pos2, pos3, diff, false);
+        }
+    }
+    recalculate_all3();
+    if (allt.length > 0) {
+        improve3();
+		return true;
+    } else {
+		return false;
+	}
 }

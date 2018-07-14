@@ -175,7 +175,40 @@ function opt_2_onclick() {
 	allt = [];
 	animation = new Animation();
 	cur_len = evaluate(path);
-	improve();
+	improve(true);
+	animation.start();
+}
+
+function opt_3_onclick() {
+	clear_errors();
+	if (mode == 'visualization') {
+		write_error(8, 'Дождитесь окончания визуализации');
+		return;
+	}
+	if (mode == 'add_city') {
+		write_error(8, 'Закончите построение городов');
+		return;
+	}
+    if (path.length != points.length) {
+		write_error(8, 'Для начала необходимо построить путь');
+		return;
+	}
+	steps = 0;
+	n = points.length;
+	pos = new Array(n.length);
+	dir = new Array(n.length);
+	allt = [];
+	animation = new Animation();
+	cur_len = evaluate(path);
+	while (true) {
+		var ok = improve3();
+		recalculate_all();
+		if (allt.length > 0) {
+			improve(false);
+		} else if (!ok) {
+			break;
+		}
+	}
 	animation.start();
 }
 

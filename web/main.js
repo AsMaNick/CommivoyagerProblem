@@ -163,7 +163,7 @@ function Graphics() {
 	}
 	
 	this.get_node_coords = function(index) {
-		console.log(this.nodes[index]);
+		//console.log(this.nodes[index]);
 		var attr = this.nodes[index].getAttribute("transform").substr(10).split(',');
 		var x = parseInt(attr[0]), y = parseInt(attr[1]);
 		return {x:x, y:y};
