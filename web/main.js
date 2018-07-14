@@ -89,8 +89,8 @@ function write_log(s) {
 }
 
 function Point(x, y) {
-	this.x = x;
-	this.y = y;
+	this.x = Math.round(x);
+	this.y = Math.round(y);
 }
 
 function dist(p1, p2) {
