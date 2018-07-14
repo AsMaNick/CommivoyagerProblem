@@ -9,8 +9,8 @@
 		return;
 	}
 	var n = get_int_field('n_cities');
-	if (isNaN(n) || n < 1 || n > MAX_POINTS) {
-		write_error(1, 'Введите кол-во городов от 1 до {0}'.format(MAX_POINTS))
+	if (isNaN(n) || n < 3 || n > MAX_POINTS) {
+		write_error(1, 'Введите кол-во городов от 3 до {0}'.format(MAX_POINTS))
 		return;
 	}
 	write_log('Сгенерирована карта из {0} городов'.format(n));
@@ -207,4 +207,17 @@ function redo_onclick() {
 		return;
 	}
 	show_block();
+}
+
+function build_test() {
+	clear_errors();
+	var elem = document.getElementsByName('test_area')[0];
+	var try_test = parse_test(elem.value);
+	if (try_test[0] != '') {
+		write_error(10, try_test[0]);
+		return;
+	}
+	points = try_test[1];
+	redraw_points();
+	go_to_the_top();
 }

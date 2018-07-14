@@ -4,7 +4,8 @@
 	var last = "";
 	for (var i = 0; i < s.length; ++i) {
 		var c = s[i];
-		if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'z') || ('0' <= c && c <= '9') || '.,+-'.indexOf(c) != -1) {
+		//if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'z') || ('0' <= c && c <= '9') || '.,+-'.indexOf(c) != -1) {
+		if ('0' <= c && c <= '9') {
 			last += c;
 			all_text += c;
 		} else {
@@ -43,8 +44,6 @@ function interval_error(l, r, param) {
 }
 
 function parse_test(s) {
-	var MAX_N = 100;
-	var MAX_X = 1000;
 	var data = split_on_words(s);
 	var tmp;
 	tmp = read(data);
@@ -55,109 +54,36 @@ function parse_test(s) {
 		return ["Параметр 'n' должен быть целым", 0];
 	}
 	var n = parseInt(tmp[1]);
-	if (!check_interval(2, MAX_N, n)) {
-		return [interval_error(2, MAX_N, 'n'), 0];
+	if (!check_interval(3, MAX_POINTS, n)) {
+		return [interval_error(3, MAX_POINTS, 'n'), 0];
 	}
-	var all_parents = new Array(n + 1);
-	for (var i = 2; i <= n; ++i) {
+	var points = [];
+	for (var i = 1; i <= n; ++i) {
 		tmp = read(data);
 		if (!tmp[0]) {
-			return ["Не хватает параметра 'parent'", 0];
+			return ["Не хватает параметра 'x'", 0];
 		}
 		if (!is_int_txt(tmp[1])) {
-			return ["Параметр 'parent' должен быть целым", 0];
+			return ["Параметр 'x' должен быть целым", 0];
 		}
-		var par = parseInt(tmp[1]);
-		if (!check_interval(1, i - 1, par)) {
-			return [interval_error(1, i - 1, 'parent'), 0];
+		var x = parseInt(tmp[1]);
+		if (!check_interval(1, MAX_X, x)) {
+			return [interval_error(1, MAX_X, 'x'), 0];
 		}
-		all_parents[i] = par;
 		tmp = read(data);
 		if (!tmp[0]) {
-			return ["Не хватает параметра 'weight'", 0];
+			return ["Не хватает параметра 'y'", 0];
 		}
 		if (!is_int_txt(tmp[1])) {
-			return ["Параметр 'weight' должен быть целым", 0];
+			return ["Параметр 'y' должен быть целым", 0];
 		}
-		var weight = parseInt(tmp[1]);
-		if (!check_interval(1, MAX_DIST, weight)) {
-			return [interval_error(1, MAX_DIST, 'weight'), 0];
+		var y = parseInt(tmp[1]);
+		if (!check_interval(1, MAX_Y, y)) {
+			return [interval_error(1, MAX_Y, 'y'), 0];
 		}
-		graph.push([par - 1, i - 1, weight]);
+		points.push(new Point(x, y));
 	}
-	tmp = read(data);
-	if (!tmp[0]) {
-		return ["Не хватает параметра 'q'", 0];
-	}
-	if (!is_int_txt(tmp[1])) {
-		return ["Параметр 'q' должен быть целым", 0];
-	}
-	var q = parseInt(tmp[1]);
-	if (!check_interval(1, MAX_Q, q)) {
-		return [interval_error(1, MAX_Q, 'q'), 0];
-	}
-	for (var i = 0; i < q; ++i) {
-		tmp = read(data);
-		if (!tmp[0]) {
-			return ["Не хватает параметра 'tp'", 0];
-		}
-		var tp = tmp[1];
-		if (tp != 'update' && tp != 'getmax') {
-			return ["Параметр 'tp' должен быть либо 'update', либо 'getmax'", 0];
-		}
-		var u, v, weight = 0;
-		tmp = read(data);
-		if (!tmp[0]) {
-			return ["Не хватает параметра 'u'", 0];
-		}
-		if (!is_int_txt(tmp[1])) {
-			return ["Параметр 'u' должен быть целым", 0];
-		}
-		u = parseInt(tmp[1]);
-		if (!check_interval(1, n, u)) {
-			return [interval_error(1, n, 'u'), 0];
-		}
-		tmp = read(data);
-		if (!tmp[0]) {
-			return ["Не хватает параметра 'v'", 0];
-		}
-		if (!is_int_txt(tmp[1])) {
-			return ["Параметр 'v' должен быть целым", 0];
-		}
-		v = parseInt(tmp[1]);
-		if (!check_interval(1, n, v)) {
-			return [interval_error(1, n, 'v'), 0];
-		}
-		
-		if (tp == "update") {
-			tmp = read(data);
-			if (!tmp[0]) {
-				return ["Не хватает параметра 'weight'", 0];
-			}
-			if (!is_int_txt(tmp[1])) {
-				return ["Параметр 'weight' должен быть целым", 0];
-			}
-			weight = parseInt(tmp[1]);
-			if (!check_interval(1, MAX_DIST, weight)) {
-				return [interval_error(1, MAX_DIST, 'weight'), 0];
-			}
-		}
-		
-		if (tp == "update") {
-			if (u >= v) {
-				return ["Параметр 'u' должен быть меньше 'v'", 0];
-			}
-			if (all_parents[v] != u) {
-				return ["Указанного ребра ({0}, {1}) нет в дереве".format(u, v), 0];
-			}
-		} else {
-			if (u == v) {
-				return ["Параметр 'u' должен быть не равен 'v'", 0];
-			}
-		}
-		querries.push([tp, u - 1, v - 1, weight]);
-	}
-	return ["", [graph, querries]];
+	return ["", points];
 }
 
 function go_to_the_top() {

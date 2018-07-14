@@ -1,6 +1,6 @@
 var MAX_POINTS = 100;
 var MAX_X = 750;
-var MAX_Y = 350;
+var MAX_Y = 370;
 var TIME_INTERVAL = 1500;
 var rad_vert = 2;
 var big_rad_vert = 5;
@@ -351,10 +351,12 @@ function show_block() {
 function write_points() {
 	var elem = document.getElementsByName('test_area')[0];
 	var s = '';
+	s += '{0}\n'.format(points.length);
 	for (var i = 0; i < points.length; ++i) {
-		s += 'points.push(new Point({0}, {1}));\n'.format(points[i].x, points[i].y);
+		//s += 'points.push(new Point({0}, {1}));\n'.format(points[i].x, points[i].y);
+		s += '{0} {1}\n'.format(points[i].x, points[i].y);
 	}
-	elem.innerHTML = s;
+	elem.value = s;
 }
 
 function redraw_points() {

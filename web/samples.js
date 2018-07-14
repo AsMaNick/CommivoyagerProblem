@@ -1,12 +1,13 @@
 function load_sample(sample) {
 	points = new Array();
 	if (sample == 'Пример 1') {
-		points.push(new Point(13, 100));
-		points.push(new Point(62, 45));
-		points.push(new Point(285, 175));
-		points.push(new Point(240, 300));
-		points.push(new Point(500, 192));
-		points.push(new Point(434, 222));
+		points = parse_test(`6
+13 100
+62 45
+285 175
+240 300
+500 192
+434 222`)[1];
 	} else if (sample == 'Пример 2') {
 		points.push(new Point(378, 167));
 		points.push(new Point(358, 123));
@@ -57,34 +58,48 @@ function load_sample(sample) {
 		points.push(new Point(226, 347));
 		points.push(new Point(178, 345));
 	} else if (sample == 'Пример 4') {
-		points.push(new Point(333, 119));
-		points.push(new Point(282, 136));
-		points.push(new Point(260, 173));
-		points.push(new Point(270, 208));
-		points.push(new Point(324, 226));
-		points.push(new Point(381, 233));
-		points.push(new Point(433, 217));
-		points.push(new Point(458, 187));
-		points.push(new Point(461, 153));
-		points.push(new Point(406, 130));
-		points.push(new Point(338, 59));
-		points.push(new Point(274, 56));
-		points.push(new Point(216, 72));
-		points.push(new Point(173, 97));
-		points.push(new Point(142, 137));
-		points.push(new Point(117, 211));
-		points.push(new Point(136, 265));
-		points.push(new Point(198, 294));
-		points.push(new Point(294, 320));
-		points.push(new Point(398, 323));
-		points.push(new Point(536, 315));
-		points.push(new Point(585, 282));
-		points.push(new Point(610, 234));
-		points.push(new Point(605, 167));
-		points.push(new Point(579, 122));
-		points.push(new Point(534, 98));
-		points.push(new Point(491, 82));
-		points.push(new Point(412, 64));
+		points = parse_test(`41
+329 137
+289 146
+227 163
+214 172
+191 194
+189 210
+205 228
+253 246
+299 255
+385 270
+456 273
+527 256
+569 242
+582 216
+573 188
+556 173
+514 160
+446 140
+404 134
+367 133
+367 39
+345 53
+326 81
+311 126
+305 180
+307 234
+316 283
+329 330
+350 356
+381 366
+411 364
+435 345
+455 308
+476 253
+483 187
+486 138
+469 99
+448 67
+427 38
+407 33
+389 35`)[1];
 	} else if (sample == 'Пример 5') {
 		points.push(new Point(644, 225));
 		points.push(new Point(569, 103));
