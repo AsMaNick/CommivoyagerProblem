@@ -120,7 +120,9 @@ def apply(params):
 	else:
 		print('Please, specify correct name of the optimization')
 			
-			
+
+if not os.path.isdir('./files'):
+	os.mkdir('./files')
 while True:
 	params = input().split()
 	if len(params) == 0:
