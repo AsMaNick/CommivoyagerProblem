@@ -2,7 +2,7 @@
 
 ## Console version
 
-The console version is located in directory 'console'. To run console version you should first compile all c++ source code in directory 'solutions'. After that, you can run console utility by executing file 'utility.bat'.
+The console version is located in the directory 'console'. To run console version you should first compile all c++ source code in directory 'solutions'. After that, you can run console utility by executing file 'utility.bat'.
 
 In this utility you can perform the following commands:
 
@@ -19,7 +19,7 @@ In this utility you can perform the following commands:
 
 ## Web version
 
-The web version is located in directory 'web'. To run web version you should just open file 'index.html' in your browser.
+The web version is located in the directory 'web'. To run web version you should just open file 'index.html' in your browser.
 
 In this version you can visualize different approaches to the commivoyager problem. 
 
@@ -27,7 +27,7 @@ But before this you should first generate a graph. You can do it in 4 ways:
 
 1. Generate `n` (`3 <= n <= 100`) random points. For this you have to enter `n` value and click 'Build random'.
 1. Load one of the five prepared samples. For this you have to select a sample and click 'Load sample'.
-1. Switch to the manual adding city mode. For this you have to click a button 'Add city manually'. In this mode you can click in some point on the map and new city will appear. After you add all cities click button 'Ready'
+1. Switch to the manual adding city mode. For this you have to click a button 'Add city manually'. In this mode you can click on some point on the map and new city will appear. After you add all cities click button 'Ready'
 1. Specify test in the text area at the bottom of the page and click a button 'Build'.
 
 After you build the map you can visualize some method of building the route. You can make visualization in 'auto' mode or 'manual' mode. In auto mode you can regulate the speed of the visualization.
