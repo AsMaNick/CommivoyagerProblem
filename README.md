@@ -2,7 +2,7 @@
 
 ## Console version
 
-The console version is located in the directory 'console'. To run console version you should first compile all c++ source code in directory 'solutions'. After that, you can run console utility by executing file 'utility.bat'.
+The console version is located in the directory 'console'. To run console version you should first compile all c++ source code. It can be done via script compile_all.bat. After that, you can run console utility by executing file 'utility.bat'.
 
 In this utility you can perform the following commands:
 
