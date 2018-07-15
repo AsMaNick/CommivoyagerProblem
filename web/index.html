@@ -9,50 +9,50 @@
 	</head>
 	<body onload=load_sample_onclick()>	
 		<div class='canvas'>
-			<legend>Карта</legend>
+			<legend>Map</legend>
 		</div>
 		<aside style='float: right; vertical-align: top; padding: 10px; border: solid 1px black;'>
 			<div>
-				<legend>Построение карты: </legend>
+				<legend>Map building: </legend>
 				<br>
 				
 				<input type='text' name="n_cities"> 
-				<button style='width:192px' onclick='build_n_random_cities_onclick()'> Построить случайные </button> <br>
+				<button style='width:192px' onclick='build_n_random_cities_onclick()'> Build random </button> <br>
 				<span class="error" id="sp1"></span> <br>
 				
 				<select name="select_sample" size="1">
-					<option>Пример 1</option>
-					<option>Пример 2</option>
-					<option>Пример 3</option>
-					<option>Пример 4</option>
-					<option>Пример 5</option>
+					<option>Sample 1</option>
+					<option>Sample 2</option>
+					<option>Sample 3</option>
+					<option>Sample 4</option>
+					<option>Sample 5</option>
 				</select>
-				<button style='width:162px; font-size: 12px;' onclick='load_sample_onclick()'> Загрузить пример </button> <br>
+				<button style='width:162px; font-size: 12px;' onclick='load_sample_onclick()'> Load sample </button> <br>
 				<span class="error" id="sp2"></span> <br>
 				
-				<button style='font-size: 12px;' onclick='enable_adding_city_onclick()' name='add_city_button'> Добавить город вручную </button> <br>
+				<button style='font-size: 12px;' onclick='enable_adding_city_onclick()' name='add_city_button'> Add city manually </button> <br>
 				<span class="error" id="sp3"></span> <br>
 				
-				<button style='font-size: 12px;' onclick='clear_cities_onclick()'> Удалить все города </button> <br>
+				<button style='font-size: 12px;' onclick='clear_cities_onclick()'> Delete all cities </button> <br>
 				<span class="error" id="sp4"></span> <br>
 			</div>
 			
 			<div>
-				<legend> Построение стартового маршрута </legend>
+				<legend> Start route building </legend>
 				<br>
 				
-				<button onclick='random_path_onclick()'> Случайный маршрут </button> <br>
+				<button onclick='random_path_onclick()'> Random route </button> <br>
 				<span class="error" id="sp5"></span> <br>
 				
-				<button onclick='closest_neighbor_onclick()'> Метод ближайшего соседа </button> <br>
+				<button onclick='closest_neighbor_onclick()'> Closest neighbor method </button> <br>
 				<span class="error" id="sp6"></span> <br>
 				
-				<button onclick='minimum_spaning_tree_onclick()'> Метод остовного дерева </button> <br>
+				<button onclick='minimum_spaning_tree_onclick()'> Spanning tree method </button> <br>
 				<span class="error" id="sp7"></span> <br>
 			</div>
 			
 			<div>
-				<legend> Локальный поиск </legend>
+				<legend> Local search </legend>
 				<br>
 				
 				<button onclick='opt_2_onclick()' style='width: 125px'> 2-opt </button>
@@ -61,29 +61,29 @@
 			</div>
 			
 			<div>
-				<legend>Дополнительно: </legend>
+				<legend>Additionally: </legend>
 				<br>
 				
-				<span style="vertical-align:top; font-size:17px; display:inline-block; margin:2px 10px 0 0;">Скорость: </span>
+				<span style="vertical-align:top; font-size:17px; display:inline-block; margin:2px 10px 0 0;">Speed: </span>
 				<input name="speed" style="width:160px;" type="range" min="1" max="1000" value="500">
 				<br>
 				<br>
 				
-				<span style="vertical-align:top; font-size:17px; display:inline-block; margin:2px 10px 0 0;"> Визуализация: </span>
+				<span style="vertical-align:top; font-size:17px; display:inline-block; margin:2px 10px 0 0;"> Visualization: </span>
 				<select name="select_v" size="1">
-					<option> Автоматическая </option>
-					<option> Ручная </option>
+					<option> Auto </option>
+					<option> Manual </option>
 				</select>
 				<br>
 				<br>
-				<button name="backward" style='width:122px' onclick='undo_onclick()' onload="changed_visualisation()"> Назад </button>
-				<button name="forward" style='width:122px' onclick='redo_onclick()' onload="changed_visualisation()"> Вперед </button> <br>
+				<button name="backward" style='width:122px' onclick='undo_onclick()' onload="changed_visualisation()"> Backward </button>
+				<button name="forward" style='width:122px' onclick='redo_onclick()' onload="changed_visualisation()"> Forward </button> <br>
 				<span class="error" id="sp9"></span>
 			</div>
 		</aside>
 		<br>
 		<br>
-		<legend> Список операций: </legend>
+		<legend> Operations list: </legend>
 		<div class='log'>
 		</div>
 		<script src="main.js"> </script>
@@ -91,7 +91,7 @@
 		<script src="parse_test.js"> </script>
 		<script src="event_handlers.js"> </script>
 		<script src="solutions.js"> </script>
-		<legend> Ручной тест: </legend>
+		<legend> Manual test: </legend>
 		<div class='test' style="text-align: center">
 			<textarea cols=97 rows=20 name="test_area">5
 1 10
@@ -100,7 +100,7 @@
 9 12
 8 3
 </textarea>
-			<button name="go_test" onclick='build_test()'> Построить </button> 
+			<button name="go_test" onclick='build_test()'> Build </button> 
 			<br>
 			<span class="error" id="sp10"></span>
 		</div>

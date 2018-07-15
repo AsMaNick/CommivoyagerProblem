@@ -1,19 +1,19 @@
 ﻿function build_n_random_cities_onclick() {
 	clear_errors();
 	if (mode == 'visualization') {
-		write_error(1, 'Дождитесь окончания визуализации');
+		write_error(1, 'Wait until the end of the visualization');
 		return;
 	}
 	if (mode == 'add_city') {
-		write_error(1, 'Закончите построение городов');
+		write_error(1, 'Finish building cities');
 		return;
 	}
 	var n = get_int_field('n_cities');
 	if (isNaN(n) || n < 3 || n > MAX_POINTS) {
-		write_error(1, 'Введите кол-во городов от 3 до {0}'.format(MAX_POINTS))
+		write_error(1, 'Enter number of citis from 3 to {0}'.format(MAX_POINTS))
 		return;
 	}
-	write_log('Сгенерирована карта из {0} городов'.format(n));
+	write_log('The map consisting of {0} cities has been generated'.format(n));
 	points = new Array(n);
 	for (var i = 0; i < n; ++i) {
 		points[i] = new Point(rand_int(1, MAX_X), rand_int(1, MAX_Y));
@@ -24,11 +24,11 @@
 function load_sample_onclick() {
 	clear_errors();
 	if (mode == 'visualization') {
-		write_error(2, 'Дождитесь окончания визуализации');
+		write_error(2, 'Wait until the end of the visualization');
 		return;
 	}
 	if (mode == 'add_city') {
-		write_error(2, 'Закончите построение городов');
+		write_error(2, 'Finish building cities');
 		return;
 	}
 	var sample = get_field('select_sample');
@@ -38,16 +38,16 @@ function load_sample_onclick() {
 function enable_adding_city_onclick() {
 	clear_errors();
 	if (mode == 'visualization') {
-		write_error(3, 'Дождитесь окончания визуализации');
+		write_error(3, 'Wait until the end of the visualization');
 		return;
 	}
 	var elem = document.getElementsByName('add_city_button')[0];
 	if (mode == 'ordinary') {
 		mode = 'add_city';
-		elem.innerHTML = 'Готово';
+		elem.innerHTML = 'Ready';
 	} else {
 		mode = 'ordinary';
-		elem.innerHTML = 'Добавить город вручную';
+		elem.innerHTML = 'Add city manually';
 	}
 }
 
@@ -61,13 +61,13 @@ function map_onclick(x, y) {
 function clear_cities_onclick() {
 	clear_errors();
 	if (mode == 'visualization') {
-		write_error(4, 'Дождитесь окончания визуализации');
+		write_error(4, 'Wait until the end of the visualization');
 		return;
 	}
 	if (mode == 'add_city') {
-		write_error(4, 'Закончите построение городов');
+		write_error(4, 'Finish building cities');
 		return;
-	}	
+	}
 	points = [];
 	redraw_points();
 }
@@ -75,15 +75,15 @@ function clear_cities_onclick() {
 function random_path_onclick() {
 	clear_errors();
 	if (mode == 'visualization') {
-		write_error(5, 'Дождитесь окончания визуализации');
+		write_error(5, 'Wait until the end of the visualization');
 		return;
 	}
 	if (mode == 'add_city') {
-		write_error(5, 'Закончите построение городов');
+		write_error(5, 'Finish building cities');
 		return;
 	}
 	if (points.length < 3) {
-		write_error(5, 'Добавьте хотя бы 3 города');
+		write_error(5, 'Add at least 3 cities');
 		return;
 	}
 	redraw_points();
@@ -93,7 +93,7 @@ function random_path_onclick() {
 		var block = new Block();
 		var u = path[i];
 		var v = path[(i + 1) % path.length];
-		block.add(new Operation('edge', 'Добавлено ребро {0} {1}'.format(u, v), 'null', 'grey', u, v));
+		block.add(new Operation('edge', 'Added edge {0} {1}'.format(u, v), 'null', 'grey', u, v));
 		animation.add(block);
 	}
 	animation.start();
@@ -102,15 +102,15 @@ function random_path_onclick() {
 function closest_neighbor_onclick() {
 	clear_errors();
 	if (mode == 'visualization') {
-		write_error(6, 'Дождитесь окончания визуализации');
+		write_error(6, 'Wait until the end of the visualization');
 		return;
 	}
 	if (mode == 'add_city') {
-		write_error(6, 'Закончите построение городов');
+		write_error(6, 'Finish building cities');
 		return;
 	}
 	if (points.length < 3) {
-		write_error(6, 'Добавьте хотя бы 3 города');
+		write_error(6, 'Add at least 3 cities');
 		return;
 	}
 	enable_visualization_mode();
@@ -121,7 +121,7 @@ function closest_neighbor_onclick() {
 		var block = new Block();
 		var u = path[i];
 		var v = path[(i + 1) % path.length];
-		block.add(new Operation('edge', 'Добавлено ребро {0} {1}'.format(u, v), 'null', 'grey', u, v));
+		block.add(new Operation('edge', 'Added edge {0} {1}'.format(u, v), 'null', 'grey', u, v));
 		animation.add(block);
 	}
 	animation.start();
@@ -130,15 +130,15 @@ function closest_neighbor_onclick() {
 function minimum_spaning_tree_onclick() {
 	clear_errors();
 	if (mode == 'visualization') {
-		write_error(7, 'Дождитесь окончания визуализации');
+		write_error(7, 'Wait until the end of the visualization');
 		return;
 	}
 	if (mode == 'add_city') {
-		write_error(7, 'Закончите построение городов');
+		write_error(7, 'Finish building cities');
 		return;
 	}
 	if (points.length < 3) {
-		write_error(7, 'Добавьте хотя бы 3 города');
+		write_error(7, 'Add at least 3 cities');
 		return;
 	}
 	redraw_points();
@@ -147,7 +147,7 @@ function minimum_spaning_tree_onclick() {
 	animation = new Animation();
 	for (var i = 0; i < edges.length; ++i) {
 		var block = new Block();
-		block.add(new Operation('edge', 'Построение минимального остовного дерево: добавлено ребро {0} {1}'.format(edges[i][0], edges[i][1]), 'null', 'grey', edges[i][0], edges[i][1]));
+		block.add(new Operation('edge', 'Building minimum spanning tree: added edge {0} {1}'.format(edges[i][0], edges[i][1]), 'null', 'grey', edges[i][0], edges[i][1]));
 		animation.add(block);
 	}
 	var g = new Array(points.length);
@@ -161,7 +161,7 @@ function minimum_spaning_tree_onclick() {
 	dfs(root, g, path, -1);
 	var block = new Block();
 	block.add(new Operation('node_rad', '', big_rad_vert, rad_vert, root));
-	block.add(new Operation('edge', 'Добавляем ребро между последней и первой вершиной пути', 'null', 'grey', path[path.length - 1], path[0]));
+	block.add(new Operation('edge', 'Added edge between last and first vertex on the path', 'null', 'grey', path[path.length - 1], path[0]));
 	animation.add(block);
 	animation.start();
 }
@@ -169,19 +169,19 @@ function minimum_spaning_tree_onclick() {
 function opt_2_onclick() {
 	clear_errors();
 	if (mode == 'visualization') {
-		write_error(8, 'Дождитесь окончания визуализации');
+		write_error(8, 'Wait until the end of the visualization');
 		return;
 	}
 	if (mode == 'add_city') {
-		write_error(8, 'Закончите построение городов');
+		write_error(8, 'Finish building cities');
 		return;
 	}
     if (path.length != points.length) {
-		write_error(8, 'Для начала необходимо построить путь');
+		write_error(8, 'Please, build path');
 		return;
 	}
 	if (points.length < 3) {
-		write_error(8, 'Добавьте хотя бы 3 города');
+		write_error(8, 'Add at least 3 cities');
 		return;
 	}
 	steps = 0;
@@ -198,19 +198,19 @@ function opt_2_onclick() {
 function opt_3_onclick() {
 	clear_errors();
 	if (mode == 'visualization') {
-		write_error(8, 'Дождитесь окончания визуализации');
+		write_error(8, 'Wait until the end of the visualization');
 		return;
 	}
 	if (mode == 'add_city') {
-		write_error(8, 'Закончите построение городов');
+		write_error(8, 'Finish building cities');
 		return;
 	}
     if (path.length != points.length) {
-		write_error(8, 'Для начала необходимо построить путь');
+		write_error(8, 'Please, build path');
 		return;
 	}
 	if (points.length < 3) {
-		write_error(8, 'Добавьте хотя бы 3 города');
+		write_error(8, 'Add at least 3 cities');
 		return;
 	}
 	steps = 0;
@@ -235,15 +235,15 @@ function opt_3_onclick() {
 function undo_onclick() {
 	clear_errors();
 	if (mode != 'visualization') {
-		write_error(9, 'Визуализация еще не начата');
+		write_error(9, 'Visualization is not started');
 		return;
 	}
 	if (visualization_type == 'auto') {
-		write_error(9, 'Режим автоматической визуализации');
+		write_error(9, 'Auto visualization mode');
 		return;
 	}
 	if (animation.block_id == 0) {
-		write_error(9, 'Вы находитесь на первом шаге');
+		write_error(9, 'You are at the first step');
 		return;
 	}
 	animation.apply_back();
@@ -252,11 +252,11 @@ function undo_onclick() {
 function redo_onclick() {
 	clear_errors();
 	if (mode != 'visualization') {
-		write_error(9, 'Визуализация еще не начата');
+		write_error(9, 'Visualization is not started');
 		return;
 	}
 	if (visualization_type == 'auto') {
-		write_error(9, 'Режим автоматической визуализации');
+		write_error(9, 'Auto visualization mode');
 		return;
 	}
 	show_block();

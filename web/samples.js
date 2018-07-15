@@ -1,6 +1,6 @@
 function load_sample(sample) {
 	points = new Array();
-	if (sample == 'Пример 1') {
+	if (sample == 'Sample 1') {
 		points = parse_test(`6
 13 100
 62 45
@@ -8,7 +8,7 @@ function load_sample(sample) {
 240 300
 500 192
 434 222`)[1];
-	} else if (sample == 'Пример 2') {
+	} else if (sample == 'Sample 2') {
 		points.push(new Point(378, 167));
 		points.push(new Point(358, 123));
 		points.push(new Point(321, 111));
@@ -33,7 +33,7 @@ function load_sample(sample) {
 		points.push(new Point(210, 308));
 		points.push(new Point(240, 343));
 
-	} else if (sample == 'Пример 3') {
+	} else if (sample == 'Sample 3') {
 		points.push(new Point(377, 189));
 		points.push(new Point(317, 120));
 		points.push(new Point(450, 120));
@@ -57,7 +57,7 @@ function load_sample(sample) {
 		points.push(new Point(613, 144));
 		points.push(new Point(226, 347));
 		points.push(new Point(178, 345));
-	} else if (sample == 'Пример 4') {
+	} else if (sample == 'Sample 4') {
 		points = parse_test(`41
 329 137
 289 146
@@ -100,7 +100,7 @@ function load_sample(sample) {
 427 38
 407 33
 389 35`)[1];
-	} else if (sample == 'Пример 5') {
+	} else if (sample == 'Sample 5') {
 		points.push(new Point(644, 225));
 		points.push(new Point(569, 103));
 		points.push(new Point(303, 104));
@@ -202,6 +202,6 @@ function load_sample(sample) {
 		points.push(new Point(320, 49));
 		points.push(new Point(491, 300));
 	}
-	write_log('Загружен ' + sample);
+	write_log(sample + ' has been loaded');
 	redraw_points();
 }

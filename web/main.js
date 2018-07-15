@@ -254,7 +254,7 @@ function Operation(tp, desc, was_col, col, u, v) {
 	
 	this.apply_back = function() {
 		if (this.desc != '') {
-			write_log('Отмена: ' + this.desc);
+			write_log('Cancel: ' + this.desc);
 		}
 		if (tp == 'node_col') {
 			graphics.set_node_col(this.u, this.was_col);
@@ -298,7 +298,7 @@ function Block() {
 
 function enable_visualization_mode() {
 	mode = 'visualization';
-	if (get_field('select_v') == 'Автоматическая') {
+	if (get_field('select_v') == 'Auto') {
 		visualization_type = 'auto';
 	} else {
 		visualization_type = 'manual';
@@ -331,7 +331,7 @@ function Animation() {
 				setTimeout(function() { show_block(); }, get_speed());
 			}
 		} else {
-			write_log('Визуализация закончена. Итоговая длина пути {0}'.format(rounded(evaluate(path))));
+			write_log('Visualization has finished. Final length of the route is {0}'.format(rounded(evaluate(path))));
 			mode = 'ordinary';
 		}
 	}

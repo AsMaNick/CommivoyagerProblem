@@ -40,7 +40,7 @@ function check_interval(l, r, x) {
 }
 
 function interval_error(l, r, param) {
-	return "Параметр {0} должен быть в пределах от {1} до {2}".format(param, l, r);
+	return "Parameter {0} should be from {1} to {2}".format(param, l, r);
 }
 
 function parse_test(s) {
@@ -48,10 +48,10 @@ function parse_test(s) {
 	var tmp;
 	tmp = read(data);
 	if (!tmp[0]) {
-		return ["Не хватает параметра 'n'", 0];
+		return ["Don't have parameter 'n'", 0];
 	}
 	if (!is_int_txt(tmp[1])) {
-		return ["Параметр 'n' должен быть целым", 0];
+		return ["Parameter 'n' should be integer", 0];
 	}
 	var n = parseInt(tmp[1]);
 	if (!check_interval(3, MAX_POINTS, n)) {
@@ -61,10 +61,10 @@ function parse_test(s) {
 	for (var i = 1; i <= n; ++i) {
 		tmp = read(data);
 		if (!tmp[0]) {
-			return ["Не хватает параметра 'x'", 0];
+			return ["Don't have parameter 'x'", 0];
 		}
 		if (!is_int_txt(tmp[1])) {
-			return ["Параметр 'x' должен быть целым", 0];
+			return ["Parameter 'x' should be integer", 0];
 		}
 		var x = parseInt(tmp[1]);
 		if (!check_interval(1, MAX_X, x)) {
@@ -72,10 +72,10 @@ function parse_test(s) {
 		}
 		tmp = read(data);
 		if (!tmp[0]) {
-			return ["Не хватает параметра 'y'", 0];
+			return ["Don't have parameter 'y'", 0];
 		}
 		if (!is_int_txt(tmp[1])) {
-			return ["Параметр 'y' должен быть целым", 0];
+			return ["Parameter 'y' should be integer", 0];
 		}
 		var y = parseInt(tmp[1]);
 		if (!check_interval(1, MAX_Y, y)) {
