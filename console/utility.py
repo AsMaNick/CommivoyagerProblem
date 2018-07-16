@@ -9,7 +9,7 @@ extension_ending = sys.argv[1]
 
 def run_command(command, **args):
 	start_time = time.time()
-	subprocess.call(command, **args)
+	subprocess.call(command, **args, shell=True)
 	return time.time() - start_time
 	
 	
@@ -27,7 +27,7 @@ def gener(params):
 		rest = ''
 		for i in range(3, len(params)):
 			rest += ' ' + params[i]
-		subprocess.call('generators/gener.{} '.format(extension_ending) + str(n) + ' ' + str(mx) + rest, stdout=open('files/input.txt', 'w'))
+		subprocess.call('generators/gener.{} '.format(extension_ending) + str(n) + ' ' + str(mx) + rest, stdout=open('files/input.txt', 'w'), shell=True)
 		print('generated')
 	except Exception as e:
 		print(e)
@@ -49,7 +49,7 @@ def gener_circle(params):
 		print('Provide correct paremeters for generation: n (1 <= n <= 1000), rs (1 <= rs[i] <= 20000)')
 		return
 	try:
-		subprocess.call('generators/gener_circle.{} {}'.format(extension_ending, s_params), stdout=open('files/input.txt', 'w'))
+		subprocess.call('generators/gener_circle.{} {}'.format(extension_ending, s_params), stdout=open('files/input.txt', 'w'), shell=True)
 		print('generated')
 	except Exception as e:
 		print(e)
@@ -59,7 +59,7 @@ def show(params):
 	command = 'python show.py'
 	for i in range(1, len(params)):
 		command += ' ' + params[i]
-	subprocess.call(command)
+	subprocess.call(command, shell=True)
 		
 
 def ends_with(a, b):

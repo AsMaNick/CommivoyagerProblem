@@ -12,7 +12,7 @@ for dir in ['solutions/', 'generators/']:
 	for file in os.listdir(dir):
 		if ends_with(file, '.cpp'):
 			print('Compiling {}...'.format(dir + file))
-			subprocess.call('g++ -O3 -std=c++11 {}'.format(dir + file))
+			subprocess.call('g++ -O3 -std=c++11 {}'.format(dir + file), shell=True)
 			if not os.path.isfile('a.' + extension_ending):
 				continue
 			if os.path.isfile(dir + file[:-4] + '.' + extension_ending):
