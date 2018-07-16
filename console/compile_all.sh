@@ -1,0 +1,1 @@
+python compile_all.py out

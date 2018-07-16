@@ -1,2 +1,2 @@
-python utility.py
+python utility.py exe
 TIMEOUT /T -1

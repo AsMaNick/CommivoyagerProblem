@@ -1,6 +1,10 @@
-import subprocess
-import time
 import os
+import sys
+import time
+import subprocess
+
+
+extension_ending = sys.argv[1]
 
 
 def run_command(command, **args):
@@ -23,7 +27,7 @@ def gener(params):
 		rest = ''
 		for i in range(3, len(params)):
 			rest += ' ' + params[i]
-		subprocess.call('generators/gener.exe ' + str(n) + ' ' + str(mx) + rest, stdout=open('files/input.txt', 'w'))
+		subprocess.call('generators/gener.{} '.format(extension_ending) + str(n) + ' ' + str(mx) + rest, stdout=open('files/input.txt', 'w'))
 		print('generated')
 	except Exception as e:
 		print(e)
@@ -45,7 +49,7 @@ def gener_circle(params):
 		print('Provide correct paremeters for generation: n (1 <= n <= 1000), rs (1 <= rs[i] <= 20000)')
 		return
 	try:
-		subprocess.call('generators/gener_circle.exe ' + s_params, stdout=open('files/input.txt', 'w'))
+		subprocess.call('generators/gener_circle.{} {}'.format(extension_ending, s_params), stdout=open('files/input.txt', 'w'))
 		print('generated')
 	except Exception as e:
 		print(e)
@@ -86,7 +90,7 @@ def run(params):
 		if params[1] == solution or params[1] == 'all':
 			ok = True
 			print('Running ' + solution + '...')
-			tm = run_command('solutions/' + solution + '.exe', stdin=open('files/input.txt', 'r'), stdout=open('files/output_' + solution + '.txt', 'w'))
+			tm = run_command('solutions/{}.{}'.format(solution, extension_ending), stdin=open('files/input.txt', 'r'), stdout=open('files/output_' + solution + '.txt', 'w'))
 			print('Done, the score is {:.2f}, time = {:.2f}s'.format(get_score(solution), tm))
 	if not ok:
 		print('Please, specify correct name of the program:', solutions)
@@ -111,7 +115,7 @@ def apply(params):
 					print('Can not apply optimization for the ' + solution + ', because do not have results for this solution')
 					continue
 				print('Applying {} for the '.format(opt) + solution + '...')
-				tm = run_command('solutions/{}.exe files/output_'.format(opt) + solution + '.txt', 
+				tm = run_command('solutions/{}.{} files/output_'.format(opt, extension_ending) + solution + '.txt', 
 								  stdin=open('files/input.txt', 'r'),
 								  stdout=open('files/output_' + solution + '_{}.txt'.format(opt), 'w'))
 				print('Done, the score is {:.2f}, time = {:.2f}s'.format(get_score(solution + '_{}'.format(opt)), tm))
