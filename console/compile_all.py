@@ -8,11 +8,14 @@ def ends_with(a, b):
 	
 
 extension_ending = sys.argv[1]
+shell_value = True
+if extension_ending == 'exe':
+	shell_value = False
 for dir in ['solutions/', 'generators/']:
 	for file in os.listdir(dir):
 		if ends_with(file, '.cpp'):
 			print('Compiling {}...'.format(dir + file))
-			subprocess.call('g++ -O3 -std=c++11 {}'.format(dir + file), shell=True)
+			subprocess.call('g++ -O3 -std=c++11 {}'.format(dir + file), shell=shell_value)
 			if not os.path.isfile('a.' + extension_ending):
 				continue
 			if os.path.isfile(dir + file[:-4] + '.' + extension_ending):
