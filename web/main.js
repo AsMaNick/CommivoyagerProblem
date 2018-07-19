@@ -84,8 +84,17 @@ function get_elem(cls) {
 	return element;
 }
 
+var cnt_logs = 0;
+var max_cnt_logs = 50;
+
 function write_log(s) {
+	++cnt_logs;
 	output.innerHTML = '<span> {0} </span> <br>'.format(s) + output.innerHTML;
+	if (cnt_logs == max_cnt_logs + 1) {
+		console.log(output.innerHTML.lastIndexOf("<span>"), output.innerHTML.length);
+		output.innerHTML = output.innerHTML.slice(0, output.innerHTML.lastIndexOf("<span>") - output.innerHTML.length);
+		cnt_logs = max_cnt_logs;
+	}
 }
 
 function Point(x, y) {
