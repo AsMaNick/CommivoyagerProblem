@@ -16,9 +16,13 @@ def run_command(command, **args):
 	return time.time() - start_time
 	
 	
+def clear_directory(directory):
+	for file in os.listdir(directory):
+		os.remove(directory + file)
+		
+		
 def gener(params):
-	if os.path.isfile('files/optimal.txt'):
-		os.remove('files/optimal.txt')
+	clear_directory('files/')
 	try:
 		n = int(params[1])
 		mx = int(params[2])
@@ -37,8 +41,7 @@ def gener(params):
 		
 		
 def gener_circle(params):
-	if os.path.isfile('files/optimal.txt'):
-		os.remove('files/optimal.txt')
+	clear_directory('files/')
 	try:
 		n = int(params[1])
 		rs = []
