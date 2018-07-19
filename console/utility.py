@@ -128,6 +128,34 @@ def apply(params):
 		print('Please, specify correct name of the optimization')
 			
 
+def show_help(params):
+	commands_list = ['gener', 'gener_circle', 'show', 'run', 'apply']
+	if len(params) == 1:
+		print('This is a console utility, in which you can generate different maps of cities and run/compare different approaches to the commivoyager problem.')
+		print('You can run such commands:')
+		for command in commands_list:
+			print('  - {}'.format(command))
+		print('To see the purpose of the concrete command run "help your_command"')
+	elif len(params) >= 2:
+		if params[1] == 'gener':
+			print('gener n mx - generates test with n random points each of them has coordinates x y (1 <= x, y <= mx)')
+		elif params[1] == 'gener_circle':
+			print('gener_circle n rad_1 rad_2 ... rad_k - generate test with n random points each of them is lies on some of k circles')
+		elif params[1] == 'show':
+			print('1) show - show the generated graph')
+			print('2) show solution_name_1 solution_name_2 ... solution_name_k - show the results of all specified solutions; to show the result of optimized solution you should write solution_name_optimization_name')
+			print('3) show all - show the results of all solutions')
+			print('4) show solution_name* - show the result of solution and all its optimizations')
+		elif params[1] == 'run':
+			print('1) run solution_name - execute one of the compiled solutions on the generated graph')
+			print('2) run all - execute all of the compiled solutions on the generated graph')
+		elif params[1] == 'apply':
+			print('1) apply optimization_name solution_name - apply specified optimization to the specified solution')
+			print('2) apply optimization_name all - apply specified optimization to all solutions that were previously run')
+		else:
+			print('Incorrect command, specify command from the list', commands_list)
+			
+	
 if not os.path.isdir('./files'):
 	os.mkdir('./files')
 while True:
@@ -145,6 +173,8 @@ while True:
 			run(params)
 		elif params[0] == 'apply':
 			apply(params)
+		elif params[0] == 'help':
+			show_help(params)
 		else:
 			print('Unknown command')
 	except Exception as e:

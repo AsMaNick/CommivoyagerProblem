@@ -6,11 +6,13 @@ The console version is located in the directory 'console'. To run console versio
 
 In this utility you can perform the following commands:
 
+* `help` - shows help
+* `help command` - shows the purpose and parameters of the specified command
 * `gener n mx` - generate test with `n` random points each of them has coordinates `x y` (`1 <= x, y <= mx`)
 * `gener_circle n rad_1 rad_2 ... rad_k` - generate test with `n` random points each of them is lies on some of `k` circles
 * `show` - show the generated graph
 * `run solution_name` - execute one of the compiled solutions on the generated graph
-* `run all` - execute all of the compiled solutions
+* `run all` - execute all of the compiled solutions on the generated graph
 * `apply optimization_name solution_name` - apply specified optimization to the specified solution
 * `apply optimization_name all` - apply specified optimization to all solutions that were previously run
 * `show solution_name_1 solution_name_2 ... solution_name_k` - show the results of all specified solutions; to show the result of optimized solution you should write solution_name_optimization_name
