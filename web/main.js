@@ -327,7 +327,9 @@ function Animation() {
 		if (this.block_id < this.blocks.length) {
 			this.blocks[this.block_id].apply();
 			++this.block_id;			
-			if (visualization_type == 'auto') {
+			if (visualization_type == 'end') {
+				this.show_block();
+			} else if (visualization_type == 'auto') {
 				setTimeout(function() { show_block(); }, get_speed());
 			}
 		} else {

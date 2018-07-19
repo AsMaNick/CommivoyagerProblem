@@ -274,3 +274,16 @@ function build_test() {
 	redraw_points();
 	go_to_the_top();
 }
+
+function end_visualization() {
+	clear_errors();
+	if (mode != 'visualization') {
+		write_error(9, 'Visualization is not started');
+		return;
+	}
+	var need_call = (visualization_type == 'manual');
+	visualization_type = 'end';
+	if (need_call) {
+		animation.show_block();
+	}
+}
