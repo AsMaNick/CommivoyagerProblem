@@ -2,9 +2,8 @@ legend {
 	font-weight: bold;
 }
 
-body {
-	padding:5;
-	margin:5;
+body {	
+	padding-left:10px;
 }
 
 input {

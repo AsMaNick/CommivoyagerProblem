@@ -53,7 +53,11 @@ function enable_adding_city_onclick() {
 
 function map_onclick(x, y) {
 	if (mode == 'add_city' && points.length < MAX_POINTS) {
-		points.push(new Point(x - document.getElementsByName("svg")[0].getBoundingClientRect().left, y - document.getElementsByName("svg")[0].getBoundingClientRect().top));
+		x -= document.getElementsByName("svg")[0].getBoundingClientRect().left;
+		y -= document.getElementsByName("svg")[0].getBoundingClientRect().top;
+		x /= get_scale();
+		y /= get_scale();
+		points.push(new Point(x, y));
 		redraw_points();
 	}
 }
@@ -285,5 +289,33 @@ function end_visualization() {
 	visualization_type = 'end';
 	if (need_call) {
 		animation.show_block();
+	}
+}
+
+var scales = [0.25, 0.35, 0.5, 0.75, 0.9, 1, 1.2, 1.5, 2, 2.8, 4];
+var cur_scale = scales.indexOf(1);
+
+function get_scale() {
+	return scales[cur_scale];
+}
+
+function rescale() {
+	var scale = get_scale();
+	var elem = document.getElementsByName('svg')[0];
+	//elem.setAttribute("transform", "translate({0}, {1}), scale({2})".format(SVG_WIDTH * 1 / scale, SVG_HEIGHT * 1 / scale, scale));
+	elem.setAttribute("transform", "translate({0}, {1}), scale({2})".format(SVG_WIDTH * (scale / 2 - 0.5), SVG_HEIGHT * (scale / 2 - 0.5), scale));
+}
+
+function scale_up() {
+	if (cur_scale + 1 < scales.length) {
+		++cur_scale;
+		rescale();
+	}
+}
+
+function scale_down() {
+	if (cur_scale - 1 >= 0) {
+		--cur_scale;
+		rescale();
 	}
 }

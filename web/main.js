@@ -4,6 +4,8 @@ var MAX_Y = 370;
 var TIME_INTERVAL = 1500;
 var rad_vert = 2;
 var big_rad_vert = 5;
+var SVG_HEIGHT = 400;
+var SVG_WIDTH = 900;
 
 function get_speed() {
 	return TIME_INTERVAL * (1001 - get_int_field('speed')) / 1000;
@@ -115,8 +117,8 @@ function Graphics() {
 	this.clear = function clear() {
 		d3.select("svg").remove();
 		this.svg = d3.select("body").select("div.canvas").append("svg").attr("onclick", "map_onclick(event.clientX, event.clientY)").attr("name", "svg");
-		this.height = 400;
-		this.width = 900;
+		this.height = SVG_HEIGHT;
+		this.width = SVG_WIDTH;
 		this.svg.attr("height", this.height).attr("width", this.width);
 	}
 	
@@ -373,6 +375,7 @@ function write_points() {
 function redraw_points() {
 	write_points();
 	graphics.clear();
+	rescale();
 	for (var i = 0; i < points.length; ++i) {
 		graphics.draw_node(i, points[i].x, points[i].y);
 	}
