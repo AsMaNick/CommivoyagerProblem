@@ -68,9 +68,9 @@ function find_minimum_spaning_tree(root) {
 function dfs(v, g, path, par) {
 	var block = new Block();
 	if (par != -1) {
-		block.add(new Operation('node_rad', '', big_rad_vert, rad_vert, par));
+		block.add(new Operation('node_rad', '', big_rad_vert(), rad_vert, par));
 	}
-	block.add(new Operation('node_rad', 'Euler travelling: enter vertex {0}'.format(v), rad_vert, big_rad_vert, v));
+	block.add(new Operation('node_rad', 'Euler travelling: enter vertex {0}'.format(v), rad_vert, big_rad_vert(), v));
 	if (path.length > 0 && par != path[path.length - 1]) {
 		block.add(new Operation('edge_col', 'Euler travelling: delete edge {0} {1}'.format(par, v), 'grey', 'red', par, v));
 		block.add(new Operation('edge_width', '', 1, 2, par, v));
@@ -87,8 +87,8 @@ function dfs(v, g, path, par) {
 		var to = g[v][i];
 		dfs(to, g, path, v);
 		block = new Block();
-		block.add(new Operation('node_rad', '', big_rad_vert, rad_vert, to));
-		block.add(new Operation('node_rad', 'Euler travelling: enter vertex {0}'.format(v), rad_vert, big_rad_vert, v));
+		block.add(new Operation('node_rad', '', big_rad_vert(), rad_vert, to));
+		block.add(new Operation('node_rad', 'Euler travelling: enter vertex {0}'.format(v), rad_vert, big_rad_vert(), v));
 		animation.add(block);
 	}
 }

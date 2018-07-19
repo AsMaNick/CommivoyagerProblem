@@ -10,19 +10,19 @@
 	<body onload=load_sample_onclick()>	
 		<legend name='canvas_name'>Map</legend>
 		<div class='canvas'>
-			<button style='position: absolute; top: 190px; left: 3px; width: 30px; height: 30px;' onclick="scale_up()"> + </button>
-			<button style='position: absolute; top: 230px; left: 3px; width: 30px; height: 30px;' onclick="scale_down()"> - </button>
+			<button style='position: absolute; top: 190px; left: 3px; width: 30px; height: 30px;' onclick="scale_up_onclick()"> + </button>
+			<button style='position: absolute; top: 230px; left: 3px; width: 30px; height: 30px;' onclick="scale_down_onclick()"> - </button>
 		</div>
 		<aside style='float: right; vertical-align: top; padding: 10px; border: solid 1px black;'>
 			<div>
 				<legend>Map building: </legend>
 				<br>
 				
-				<input type='text' name="n_cities"> 
+				<input type='text' name="n_cities" style='height: 18px'> 
 				<button style='width:192px' onclick='build_n_random_cities_onclick()'> Build random </button> <br>
 				<span class="error" id="sp1"></span> <br>
 				
-				<select name="select_sample" size="1">
+				<select name="select_sample" size="1" style="height: 23px">
 					<option>Sample 1</option>
 					<option>Sample 2</option>
 					<option>Sample 3</option>
@@ -78,6 +78,11 @@
 				</select>
 				<br>
 				<br>
+				
+				<input type="checkbox" style="width: 15px" onchange="enumerate_vertices_onchange()" name="enumerate_vertices_checkbox"> Enumerate vertices </input>
+				<br>
+				<br>
+				
 				<button name="backward" style='width:81px' onclick='undo_onclick()' onload="changed_visualisation()"> Backward </button>
 				<button name="forward" style='width:81px' onclick='redo_onclick()' onload="changed_visualisation()"> Forward </button> 
 				<button name="forward" style='width:82px' onclick='end_visualization()' onload="changed_visualisation()"> End </button> <br>

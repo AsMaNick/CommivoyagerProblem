@@ -14,9 +14,10 @@ input {
 button {
 	font-size: 13px;
 	vertical-align: top;
-	padding-top:5px;
+	padding-top:3px;
 	padding-bottom:5px;
 	width: 250px;
+	height: 23px;
 }
 			
 .canvas {

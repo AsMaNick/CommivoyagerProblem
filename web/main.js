@@ -3,12 +3,25 @@ var MAX_X = 750;
 var MAX_Y = 370;
 var TIME_INTERVAL = 1500;
 var rad_vert = 2;
-var big_rad_vert = 5;
 var SVG_HEIGHT = 400;
 var SVG_WIDTH = 900;
 
+function get_text_vertices() {
+	if (enumerate_vertices) {
+		return "black";
+	}
+	return "transparent";
+}
+
 function get_speed() {
 	return TIME_INTERVAL * (1001 - get_int_field('speed')) / 1000;
+}
+
+function big_rad_vert() {
+	if (rad_vert == 2) {
+		return 5;
+	}
+	return rad_vert + 5;
 }
 
 if (!String.prototype.format) {
@@ -117,12 +130,10 @@ function Graphics() {
 	this.clear = function clear() {
 		d3.select("svg").remove();
 		
-		this.svg = d3.select("body")
-		.select("div.canvas")
-		.append("svg")
-		.attr("onclick", "map_onclick(event.clientX, event.clientY)")
-		.attr("onmousemove", "map_onmove(event.clientX, event.clientY)")
-		.attr("name", "svg");
+		this.svg = d3.select("body").select("div.canvas").append("svg")
+															.attr("onclick", "map_onclick(event.clientX, event.clientY)")
+															.attr("onmousemove", "map_onmove(event.clientX, event.clientY)")
+															.attr("name", "svg");
 		
 		this.height = SVG_HEIGHT;
 		this.width = SVG_WIDTH;
@@ -144,18 +155,19 @@ function Graphics() {
 	this.draw_node = function draw_vertex(v, x, y) {
 		var g = this.svg.append("g").attr("onclick", "node_onclick({0})".format(v));
 		
+		
 		g.append("circle")
 			.style("fill", "white")
 			.style("stroke", "steelblue")
-			.style("stroke-width", "2") 
+			.style("stroke-width", "2")
 			.attr("r", rad_vert)
-			
-		/*g.append("text")
+		
+		g.append("text")
 			.attr("y", 5)
 			.attr('text-anchor', 'middle')
-			.attr("fill", "black")
+			.attr("fill", get_text_vertices())
 			.style('font-weight', 'bold')
-			.text('{0}'.format(v));*/
+			.text('{0}'.format(v));
 		
 		this.nodes[v] = g._groups[0][0];
 		x += rad_vert;
@@ -231,6 +243,10 @@ function Graphics() {
 	
 	this.del_edge = function(u, v) {
 		this.edges[[u, v]].remove();
+	}
+	
+	this.del_node = function(v) {
+		this.nodes[v].remove();
 	}
 }
 
@@ -321,6 +337,8 @@ function enable_visualization_mode() {
 	} else {
 		visualization_type = 'manual';
 	}
+	var elem = document.getElementsByName("enumerate_vertices_checkbox")[0];
+	elem.disabled = true;
 }
 
 function Animation() {
@@ -351,6 +369,8 @@ function Animation() {
 				setTimeout(function() { show_block(); }, get_speed());
 			}
 		} else {
+			var elem = document.getElementsByName("enumerate_vertices_checkbox")[0];
+			elem.disabled = false;
 			write_log('Visualization has finished. Final length of the route is {0}'.format(rounded(evaluate(path))));
 			mode = 'ordinary';
 		}

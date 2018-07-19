@@ -19,6 +19,7 @@
 		points[i] = new Point(rand_int(1, MAX_X), rand_int(1, MAX_Y));
 	}
 	redraw_points();
+	path = [];
 }
 
 function load_sample_onclick() {
@@ -33,6 +34,7 @@ function load_sample_onclick() {
 	}
 	var sample = get_field('select_sample');
 	load_sample(sample);
+	path = [];
 }
 
 function enable_adding_city_onclick() {
@@ -60,6 +62,7 @@ function map_onclick(x, y) {
 		x = parseInt(x);
 		y = parseInt(y);
 		points.push(new Point(x, y));
+		path = [];
 		redraw_points();
 	}
 }
@@ -89,6 +92,7 @@ function clear_cities_onclick() {
 		return;
 	}
 	points = [];
+	path = [];
 	redraw_points();
 }
 
@@ -180,7 +184,7 @@ function minimum_spaning_tree_onclick() {
 	path = [];
 	dfs(root, g, path, -1);
 	var block = new Block();
-	block.add(new Operation('node_rad', '', big_rad_vert, rad_vert, root));
+	block.add(new Operation('node_rad', '', big_rad_vert(), rad_vert, root));
 	block.add(new Operation('edge', 'Added edge between last and first vertex on the path', 'null', 'grey', path[path.length - 1], path[0]));
 	animation.add(block);
 	animation.start();
@@ -291,6 +295,7 @@ function build_test() {
 		return;
 	}
 	points = try_test[1];
+	path = [];
 	redraw_points();
 	go_to_the_top();
 }
@@ -322,16 +327,39 @@ function rescale() {
 	elem.setAttribute("transform", "translate({0}, {1}), scale({2})".format(SVG_WIDTH * (scale / 2 - 0.5), SVG_HEIGHT * (scale / 2 - 0.5), scale));
 }
 
-function scale_up() {
+function scale_up_onclick() {
 	if (cur_scale + 1 < scales.length) {
 		++cur_scale;
 		rescale();
 	}
 }
 
-function scale_down() {
+function scale_down_onclick() {
 	if (cur_scale - 1 >= 0) {
 		--cur_scale;
 		rescale();
+	}
+}
+
+var enumerate_vertices = false;
+
+function enumerate_vertices_onchange() {
+	enumerate_vertices = !enumerate_vertices;
+	if (enumerate_vertices) {
+		rad_vert = 13;
+	} else {
+		rad_vert = 2;
+	}
+	for (var i = 0; i < points.length; ++i) {
+		graphics.del_node(i);
+		graphics.draw_node(i, points[i].x, points[i].y);
+	}
+	if (path.length == points.length) {
+		for (var i = 0; i < path.length; ++i) {
+			var u = path[i];
+			var v = path[(i + 1) % path.length];
+			graphics.del_edge(u, v);
+			graphics.draw_edge(u, v);
+		}
 	}
 }
