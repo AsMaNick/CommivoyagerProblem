@@ -57,9 +57,25 @@ function map_onclick(x, y) {
 		y -= document.getElementsByName("svg")[0].getBoundingClientRect().top;
 		x /= get_scale();
 		y /= get_scale();
+		x = parseInt(x);
+		y = parseInt(y);
 		points.push(new Point(x, y));
 		redraw_points();
 	}
+}
+
+var canvas_name = document.getElementsByName("canvas_name")[0];
+
+function map_onmove(x, y) {
+	x -= document.getElementsByName("svg")[0].getBoundingClientRect().left;
+	y -= document.getElementsByName("svg")[0].getBoundingClientRect().top;
+	x /= get_scale();
+	y /= get_scale();
+	x = parseInt(x);
+	y = parseInt(y);
+	--x;
+	--y;
+	canvas_name.innerHTML = "Map ({0}, {1})".format(x, y);
 }
 
 function clear_cities_onclick() {

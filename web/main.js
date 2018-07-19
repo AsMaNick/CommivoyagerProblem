@@ -116,7 +116,14 @@ function Graphics() {
 	
 	this.clear = function clear() {
 		d3.select("svg").remove();
-		this.svg = d3.select("body").select("div.canvas").append("svg").attr("onclick", "map_onclick(event.clientX, event.clientY)").attr("name", "svg");
+		
+		this.svg = d3.select("body")
+		.select("div.canvas")
+		.append("svg")
+		.attr("onclick", "map_onclick(event.clientX, event.clientY)")
+		.attr("onmousemove", "map_onmove(event.clientX, event.clientY)")
+		.attr("name", "svg");
+		
 		this.height = SVG_HEIGHT;
 		this.width = SVG_WIDTH;
 		this.svg.attr("height", this.height).attr("width", this.width);
